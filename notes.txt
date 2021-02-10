@@ -1,0 +1,14 @@
+﻿Resources
+
+Biomes
+	Terrain Layers
+		Textures
+		JSON
+	Audio
+		TBD
+	Map generator
+
+	Layers[]
+		Map Generator
+		Scenery Distributor
+		
