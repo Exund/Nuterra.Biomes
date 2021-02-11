@@ -1,0 +1,24 @@
+{
+    "name": "SAND",
+
+    "diffuseTexture": "TERRAIN_SAND_01.png",
+    "normalMapTexture": "TERRAIN_SAND_01_NM.png",
+    //"maskMapTexture": "",
+    "tileSize": {
+        "x": 32,
+        "y": 32
+    },
+    "tileOffset": {
+        "x": 0,
+        "y": 0
+    },
+    "specular": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+    },
+    "metallic": 0.1,
+    "smoothness": 0,
+    "normalScale": 1
+}

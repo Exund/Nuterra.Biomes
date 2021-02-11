@@ -5,7 +5,7 @@ Biomes
 		Textures
 		JSON
 	Audio
-		TBD
+		MP3/WAV file (Handled by UnityWebRequest)
 	Map generator
 
 	Layers[]
