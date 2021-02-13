@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,8 +16,9 @@ namespace Nuterra.Biomes
     public static class Resources
     {
         public static readonly string BiomesFolderPath = Path.Combine(Application.dataPath, "../Custom Biomes");
-        public static readonly string BiomesExtention = "*.biome.json";
-        public static readonly string TerrainLayerExtention = "*.layer.json";
+        public static readonly string BiomesExtension = "*.biome.json";
+        public static readonly string TerrainLayerExtension = "*.layer.json";
+        public static readonly string MapGeneratorExtension = "*.generator.json";
 
         public static readonly DirectoryInfo BiomesFolder = Directory.CreateDirectory(BiomesFolderPath);
 
@@ -28,6 +30,8 @@ namespace Nuterra.Biomes
         internal static readonly string AudioTag = AssetsTag + "/Audio";
         internal static readonly string TexturesTag = AssetsTag + "/Textures";
         internal static readonly string TerrainLayersTag = AssetsTag + "/TerrainLayers";
+        internal static readonly string MapGeneratorsTag = AssetsTag + "/MapGenerators";
+        internal static readonly string BiomesTag = AssetsTag + "/Biomes";
 
         static void LogAsset(string value, string tag = "")
         {
@@ -63,7 +67,7 @@ namespace Nuterra.Biomes
             }
             else
             {*/
-                userResources[type].Add(name, obj);
+            userResources[type].Add(name, obj);
             //}
 
             LogAsset(string.Format("Added {0} {1}", type.Name, name), MetaTag);
@@ -230,7 +234,7 @@ namespace Nuterra.Biomes
 
         public static IEnumerator LoadAllTerrainLayers()
         {
-            var layers = BiomesFolder.GetFiles(TerrainLayerExtention, SearchOption.AllDirectories);
+            var layers = BiomesFolder.GetFiles(TerrainLayerExtension, SearchOption.AllDirectories);
             LogAsset("Loading TerrainLayers", TerrainLayersTag);
 
             foreach (var file in layers)
@@ -268,6 +272,139 @@ namespace Nuterra.Biomes
                 catch (Exception e)
                 {
                     LogFileError(file, e.ToString(), TerrainLayersTag);
+                }
+
+                yield return null;
+            }
+
+            yield break;
+        }
+
+        public static IEnumerator LoadAllMapGenerators()
+        {
+            var m_Layers = typeof(MapGenerator).GetField("m_Layers", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            var generators = BiomesFolder.GetFiles(MapGeneratorExtension, SearchOption.AllDirectories);
+            LogAsset("Loading MapGenerators", MapGeneratorsTag);
+
+            GameObject generators_holder = new GameObject();
+
+            foreach (var file in generators)
+            {
+                var fileName = file.Name;
+                try
+                {
+                    var generatorJSON = JObject.Parse(File.ReadAllText(file.FullName));
+
+                    if (generatorJSON["name"] != null)
+                    {
+                        var name = generatorJSON["name"].ToString();
+                        if (!ResourcesContainsKey<MapGenerator>(name))
+                        {
+                            var generator_go = new GameObject();
+                            generator_go.transform.SetParent(generators_holder.transform);
+                            var generator_base = generator_go.AddComponent<MapGenerator>();
+                            JsonConvert.PopulateObject(generatorJSON.ToString(), generator_base, new JsonSerializerSettings()
+                            {
+                                MissingMemberHandling = MissingMemberHandling.Ignore,
+                                Converters = { new JsonConverters.ArrayConverter<MapGenerator.Layer>() }
+                            });
+
+                            var layers = ((JArray)generatorJSON["m_Layers"]).ToObject<MapGenerator.Layer[]>();
+
+                            m_Layers.SetValue(generator_base, layers);
+
+                            AddObjectToResources(generator_base, name);
+                        }
+                        else
+                        {
+                            LogAsset(string.Format("MapGenerator \"{0}\" already exists!", name), MapGeneratorsTag);
+                        }
+                    }
+                    else
+                    {
+                        LogAsset(string.Format("MapGenerator in file \"{0}\" has no name!", fileName), MapGeneratorsTag);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogFileError(file, e.ToString(), MapGeneratorsTag);
+                }
+
+                yield return null;
+            }
+
+            yield break;
+        }
+
+        public static IEnumerator LoadAllBiomes()
+        {
+            var Biome_T = typeof(Biome);
+            var fields = Biome_T.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            var biomes = BiomesFolder.GetFiles(BiomesExtension, SearchOption.AllDirectories);
+            LogAsset("Loading Biomes", BiomesTag);
+
+            var settings = new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                Converters = {
+                    new JsonConverters.ScriptableObjectConverter(),
+                    new JsonConverters.UnityObjectConverter<Texture>(),
+                    new JsonConverters.UnityObjectConverter<AudioClip>(),
+                    new JsonConverters.UnityObjectConverter<TerrainLayer>(),
+                    new JsonConverters.UnityObjectConverter<MapGenerator>(),
+                    new JsonConverters.UnityObjectConverter<TerrainObject>(),
+                }
+            };
+
+            var serializer = JsonSerializer.CreateDefault(settings);
+
+            foreach (var file in biomes)
+            {
+                var fileName = file.Name;
+                try
+                {
+                    var biomeJSON = JObject.Parse(File.ReadAllText(file.FullName));
+
+                    if (biomeJSON["name"] != null)
+                    {
+                        var name = biomeJSON["name"].ToString();
+                        if (!ResourcesContainsKey<Biome>(name))
+                        {
+                            var biome = ScriptableObject.CreateInstance<Biome>();
+
+                            foreach (var field in fields)
+                            {
+                                try
+                                {
+                                    if (field.GetValue(biome) == null && biomeJSON[field.Name] != null)
+                                    {
+                                        field.SetValue(biome, biomeJSON[field.Name].ToObject(field.FieldType, serializer));
+                                    }
+                                } 
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(field.Name);
+                                    Console.WriteLine(e);
+                                }
+                            }
+
+                            AddObjectToResources(biome, name);
+                        }
+                        else
+                        {
+                            LogAsset(string.Format("Biome \"{0}\" already exists!", name), BiomesTag);
+                        }
+                    }
+                    else
+                    {
+                        LogAsset(string.Format("Biome in file \"{0}\" has no name!", fileName), BiomesTag);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogFileError(file, e.ToString(), BiomesTag);
                 }
 
                 yield return null;

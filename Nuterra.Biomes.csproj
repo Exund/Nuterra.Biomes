@@ -96,14 +96,42 @@
     <Compile Include="ResourcesLoader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Examples\basic_grassland\basic_grassland.biome.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Test\basic.generator.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Examples\Test\sand.layer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Examples\Test\test.biome.json" />
     <None Include="mod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Examples\basic_grassland\Audio\BGMDanger1.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\basic_grassland\Audio\BGMExplore1.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\basic_grassland\Audio\TTGrassAmbienceCreaksDemo5.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\basic_grassland\Textures\TERRAIN_GRASS_01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\basic_grassland\Textures\TERRAIN_GRASS_01_NM.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\basic_grassland\Textures\TERRAIN_GRASS_02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\basic_grassland\Textures\TERRAIN_GRASS_02_NM.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Examples\Test\Textures\TERRAIN_SAND_01.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
