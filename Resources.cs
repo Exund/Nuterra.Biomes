@@ -19,11 +19,13 @@ namespace Nuterra.Biomes
         public static readonly string BiomesExtension = "*.biome.json";
         public static readonly string TerrainLayerExtension = "*.layer.json";
         public static readonly string MapGeneratorExtension = "*.generator.json";
+        public static readonly string BiomeGroupsExtension = "*.group.json";
 
         public static readonly DirectoryInfo BiomesFolder = Directory.CreateDirectory(BiomesFolderPath);
 
         internal static Dictionary<Type, Dictionary<string, UnityEngine.Object>> userResources = new Dictionary<Type, Dictionary<string, UnityEngine.Object>>();
         internal static Dictionary<Type, Dictionary<string, UnityEngine.Object>> gameResources = new Dictionary<Type, Dictionary<string, UnityEngine.Object>>();
+        internal static List<BiomeWrapper> biomeWrappers = new List<BiomeWrapper>();
 
         internal static readonly string AssetsTag = "/Assets";
         internal static readonly string MetaTag = AssetsTag + "/Meta";
@@ -32,13 +34,22 @@ namespace Nuterra.Biomes
         internal static readonly string TerrainLayersTag = AssetsTag + "/TerrainLayers";
         internal static readonly string MapGeneratorsTag = AssetsTag + "/MapGenerators";
         internal static readonly string BiomesTag = AssetsTag + "/Biomes";
+        internal static readonly string BiomeGroupsTag = AssetsTag + "/BiomeGroups";
 
-        static void LogAsset(string value, string tag = "")
+        internal static Type BiomeGroup_T = typeof(BiomeGroup);
+        internal static FieldInfo[] BiomeGroup_fields = BiomeGroup_T.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+        internal static void LogAsset(string value, string tag = "")
         {
             Console.WriteLine(string.Format("[Nuterra.Biomes{0}] {1}", tag, value));
         }
 
-        static void LogFileError(FileInfo file, string e, string tag = "")
+        internal static void LogError(string value, string tag = "")
+        {
+            LogAsset("Error: " + value, tag);
+        }
+
+        internal static void LogFileError(FileInfo file, string e, string tag = "")
         {
             LogAsset(string.Format("Error while loading \"{0}\" :\n{1}", Path.Combine(file.Directory.Name, file.Name), e), tag);
         }
@@ -55,7 +66,7 @@ namespace Nuterra.Biomes
             return input;
         }
 
-        public static void AddObjectToResources<T>(Type type, T obj, string name) where T : UnityEngine.Object
+        public static void AddObjectToUserResources(Type type, UnityEngine.Object obj, string name)
         {
             if (!userResources.ContainsKey(type))
             {
@@ -73,19 +84,19 @@ namespace Nuterra.Biomes
             LogAsset(string.Format("Added {0} {1}", type.Name, name), MetaTag);
         }
 
-        public static void AddObjectToResources<T>(T obj, string name) where T : UnityEngine.Object
+        public static void AddObjectToUserResources<T>(T obj, string name) where T : UnityEngine.Object
         {
-            AddObjectToResources<T>(typeof(T), obj, name);
+            AddObjectToUserResources(typeof(T), obj, name);
         }
 
-        public static bool ResourcesContainsKey(Type type, string name)
+        public static bool UserResourcesContainsKey(Type type, string name)
         {
             return userResources.ContainsKey(type) && userResources[type].ContainsKey(name);
         }
 
-        public static bool ResourcesContainsKey<T>(string name)
+        public static bool UserResourcesContainsKey<T>(string name)
         {
-            return ResourcesContainsKey(typeof(T), name);
+            return UserResourcesContainsKey(typeof(T), name);
         }
 
         public static T GetObjectFromUserResources<T>(string name) where T : UnityEngine.Object
@@ -101,11 +112,6 @@ namespace Nuterra.Biomes
             }
 
             return null;
-        }
-
-        public static T GetObjectFromGameResources<T>(string name) where T : UnityEngine.Object
-        {
-            return (T)GetObjectFromGameResources(typeof(T), name);
         }
 
         public static UnityEngine.Object GetObjectFromGameResources(Type type, string name)
@@ -146,6 +152,29 @@ namespace Nuterra.Biomes
             return searchresult;
         }
 
+        public static T GetObjectFromGameResources<T>(string name) where T : UnityEngine.Object
+        {
+            return (T)GetObjectFromGameResources(typeof(T), name);
+        }
+
+        public static UnityEngine.Object GetObjectFromResources(Type type, string name)
+        {
+            var res = GetObjectFromUserResources(type, name);
+
+            if (!res)
+            {
+                res = GetObjectFromGameResources(type, name);
+            }
+
+            return res;
+        }
+
+        public static T GetObjectFromResources<T>(string name) where T : UnityEngine.Object
+        {
+            return (T)GetObjectFromResources(typeof(T), name);
+        }
+
+
         public static IEnumerator LoadAllTextures()
         {
             var PNGs = BiomesFolder.GetFiles("*.png", SearchOption.AllDirectories);
@@ -153,7 +182,7 @@ namespace Nuterra.Biomes
             foreach (var file in PNGs)
             {
                 var name = file.Name;
-                if (!ResourcesContainsKey<Texture>(name))
+                if (!UserResourcesContainsKey<Texture>(name))
                 {
                     try
                     {
@@ -162,8 +191,8 @@ namespace Nuterra.Biomes
                         tex.LoadImage(bytes);
                         tex.Apply();
 
-                        AddObjectToResources<Texture2D>(tex, name);
-                        AddObjectToResources<Texture>(tex, name);
+                        AddObjectToUserResources<Texture2D>(tex, name);
+                        AddObjectToUserResources<Texture>(tex, name);
                     }
                     catch (Exception e)
                     {
@@ -173,7 +202,7 @@ namespace Nuterra.Biomes
                 }
                 else
                 {
-                    LogAsset(string.Format("Texture \"{0}\" already exists!", name), TexturesTag);
+                    LogError(string.Format("Texture \"{0}\" already exists!", name), TexturesTag);
                 }
             }
 
@@ -198,7 +227,7 @@ namespace Nuterra.Biomes
             foreach (var file in files)
             {
                 var name = file.Name;
-                if (!ResourcesContainsKey<AudioClip>(name))
+                if (!UserResourcesContainsKey<AudioClip>(name))
                 {
                     var path = Path.Combine("file://", file.FullName);
                     using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(path, type))
@@ -214,7 +243,7 @@ namespace Nuterra.Biomes
                             else
                             {
                                 AudioClip clip = DownloadHandlerAudioClip.GetContent(www);
-                                AddObjectToResources(clip, name);
+                                AddObjectToUserResources(clip, name);
                             }
                         }
                         catch (Exception e)
@@ -225,7 +254,7 @@ namespace Nuterra.Biomes
                 }
                 else
                 {
-                    LogAsset(string.Format("Audio \"{0}\" already exists!", name), AudioTag);
+                    LogError(string.Format("Audio \"{0}\" already exists!", name), AudioTag);
                 }
             }
 
@@ -247,7 +276,7 @@ namespace Nuterra.Biomes
                     if (layerJSON["name"] != null)
                     {
                         var name = layerJSON["name"].ToString();
-                        if (!ResourcesContainsKey<TerrainLayer>(name))
+                        if (!UserResourcesContainsKey<TerrainLayer>(name))
                         {
                             var layer = layerJSON.ToObject<TerrainLayer>(JsonSerializer.CreateDefault(new JsonSerializerSettings()
                             {
@@ -257,16 +286,16 @@ namespace Nuterra.Biomes
                                 MissingMemberHandling = MissingMemberHandling.Ignore
                             }));
 
-                            AddObjectToResources(layer, name);
+                            AddObjectToUserResources(layer, name);
                         }
                         else
                         {
-                            LogAsset(string.Format("TerrainLayer \"{0}\" already exists!", name), TerrainLayersTag);
+                            LogError(string.Format("TerrainLayer \"{0}\" already exists!", name), TerrainLayersTag);
                         }
                     }
                     else
                     {
-                        LogAsset(string.Format("TerrainLayer in file \"{0}\" has no name!", fileName), TerrainLayersTag);
+                        LogError(string.Format("TerrainLayer in file \"{0}\" has no name!", fileName), TerrainLayersTag);
                     }
                 }
                 catch (Exception e)
@@ -298,11 +327,12 @@ namespace Nuterra.Biomes
                     if (generatorJSON["name"] != null)
                     {
                         var name = generatorJSON["name"].ToString();
-                        if (!ResourcesContainsKey<MapGenerator>(name))
+                        if (!UserResourcesContainsKey<MapGenerator>(name))
                         {
-                            var generator_go = new GameObject();
+                            var generator_go = new GameObject(name);
                             generator_go.transform.SetParent(generators_holder.transform);
                             var generator_base = generator_go.AddComponent<MapGenerator>();
+                            generator_base.name = name;
                             JsonConvert.PopulateObject(generatorJSON.ToString(), generator_base, new JsonSerializerSettings()
                             {
                                 MissingMemberHandling = MissingMemberHandling.Ignore,
@@ -313,16 +343,16 @@ namespace Nuterra.Biomes
 
                             m_Layers.SetValue(generator_base, layers);
 
-                            AddObjectToResources(generator_base, name);
+                            AddObjectToUserResources(generator_base, name);
                         }
                         else
                         {
-                            LogAsset(string.Format("MapGenerator \"{0}\" already exists!", name), MapGeneratorsTag);
+                            LogError(string.Format("MapGenerator \"{0}\" already exists!", name), MapGeneratorsTag);
                         }
                     }
                     else
                     {
-                        LogAsset(string.Format("MapGenerator in file \"{0}\" has no name!", fileName), MapGeneratorsTag);
+                        LogError(string.Format("MapGenerator in file \"{0}\" has no name!", fileName), MapGeneratorsTag);
                     }
                 }
                 catch (Exception e)
@@ -355,6 +385,7 @@ namespace Nuterra.Biomes
                     new JsonConverters.UnityObjectConverter<TerrainLayer>(),
                     new JsonConverters.UnityObjectConverter<MapGenerator>(),
                     new JsonConverters.UnityObjectConverter<TerrainObject>(),
+                    new JsonConverters.PrefabGroupConverter()
                 }
             };
 
@@ -370,15 +401,30 @@ namespace Nuterra.Biomes
                     if (biomeJSON["name"] != null)
                     {
                         var name = biomeJSON["name"].ToString();
-                        if (!ResourcesContainsKey<Biome>(name))
+                        if (!UserResourcesContainsKey<Biome>(name))
                         {
                             var biome = ScriptableObject.CreateInstance<Biome>();
+
+                            if(biomeJSON["Reference"] != null)
+                            {
+                                var refName = biomeJSON["Reference"].ToString();
+                                var reference = GetObjectFromGameResources<Biome>(refName);
+                                if(!reference)
+                                {
+                                    LogError(string.Format("Biome reference \"{0}\" for Biome \"{1}\" doesn't exists!", refName, name), BiomesTag);
+                                    continue;
+                                }
+
+                                biome = UnityEngine.Object.Instantiate(reference);
+                            }
+
+                            biome.name = name;
 
                             foreach (var field in fields)
                             {
                                 try
                                 {
-                                    if (field.GetValue(biome) == null && biomeJSON[field.Name] != null)
+                                    if (biomeJSON[field.Name] != null)
                                     {
                                         field.SetValue(biome, biomeJSON[field.Name].ToObject(field.FieldType, serializer));
                                     }
@@ -390,21 +436,99 @@ namespace Nuterra.Biomes
                                 }
                             }
 
-                            AddObjectToResources(biome, name);
+                            if(biomeJSON["BiomeGroupName"] != null)
+                            {
+                                biomeWrappers.Add(new BiomeWrapper()
+                                {
+                                    biome = biome,
+                                    biomeGroupName = biomeJSON["BiomeGroupName"].ToObject<string>(),
+                                    biomeWeight = biomeJSON["BiomeWeight"] == null ? 1f : biomeJSON["BiomeWeight"].ToObject<float>()
+                                });
+                            }
+
+                            AddObjectToUserResources(biome, name);
                         }
                         else
                         {
-                            LogAsset(string.Format("Biome \"{0}\" already exists!", name), BiomesTag);
+                            LogError(string.Format("Biome \"{0}\" already exists!", name), BiomesTag);
                         }
                     }
                     else
                     {
-                        LogAsset(string.Format("Biome in file \"{0}\" has no name!", fileName), BiomesTag);
+                        LogError(string.Format("Biome in file \"{0}\" has no name!", fileName), BiomesTag);
                     }
                 }
                 catch (Exception e)
                 {
                     LogFileError(file, e.ToString(), BiomesTag);
+                }
+
+                yield return null;
+            }
+        }
+
+        public static IEnumerator LoadAllBiomeGroups()
+        {
+            var biomeGroups = BiomesFolder.GetFiles(BiomeGroupsExtension, SearchOption.AllDirectories);
+            LogAsset("Loading BiomesGroups", BiomesTag);
+
+            var settings = new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                Converters = {
+                    new JsonConverters.UnityObjectConverter<Biome>(),
+                }
+            };
+
+            var serializer = JsonSerializer.CreateDefault(settings);
+
+            foreach (var file in biomeGroups)
+            {
+                var fileName = file.Name;
+                try
+                {
+                    var biomeGroupJSON = JObject.Parse(File.ReadAllText(file.FullName));
+
+                    if (biomeGroupJSON["name"] != null)
+                    {
+                        var name = biomeGroupJSON["name"].ToString();
+                        if (!UserResourcesContainsKey<BiomeGroup>(name))
+                        {
+                            var biomeGroup = ScriptableObject.CreateInstance<BiomeGroup>();
+                            biomeGroup.name = name;
+
+                            foreach (var field in BiomeGroup_fields)
+                            {
+                                try
+                                {
+                                    if (biomeGroupJSON[field.Name] != null)
+                                    {
+                                        field.SetValue(biomeGroup, biomeGroupJSON[field.Name].ToObject(field.FieldType, serializer));
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(field.Name);
+                                    Console.WriteLine(e);
+                                }
+                            }
+
+                            AddObjectToUserResources(biomeGroup, name);
+                        }
+                        else
+                        {
+                            LogError(string.Format("BiomeGroup \"{0}\" already exists!", name), BiomeGroupsTag);
+                        }
+                    }
+                    else
+                    {
+                        LogError(string.Format("BiomeGroup in file \"{0}\" has no name!", fileName), BiomeGroupsTag);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogFileError(file, e.ToString(), BiomeGroupsTag);
                 }
 
                 yield return null;

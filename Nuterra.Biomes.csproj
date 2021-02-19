@@ -63,6 +63,10 @@
       <HintPath>..\..\Program Files\Steam\steamapps\common\TerraTech\TerraTechWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\Program Files\Steam\steamapps\common\TerraTech\TerraTechWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>..\..\Program Files\Steam\steamapps\common\TerraTech\TerraTechWin64_Data\Managed\UnityEngine.Networking.dll</HintPath>
       <Private>False</Private>
@@ -89,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BiomeWrapper.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="JsonConverters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,15 +116,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Examples\basic_grassland\Audio\BGMDanger1.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Examples\basic_grassland\Audio\BGMExplore1.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Examples\basic_grassland\Audio\TTGrassAmbienceCreaksDemo5.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Examples\basic_grassland\Textures\TERRAIN_GRASS_01.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

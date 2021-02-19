@@ -19,15 +19,7 @@ namespace Nuterra.Biomes.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var val = reader.Value.ToString();
-            var res = Resources.GetObjectFromUserResources(objectType, val);
-
-            if(!res)
-            {
-                res = Resources.GetObjectFromGameResources(objectType, val);
-            }
-
-            return res;
+            return Resources.GetObjectFromResources(objectType, reader.Value.ToString());
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -82,20 +74,6 @@ namespace Nuterra.Biomes.JsonConverters
         public override bool CanRead => true;
     }
 
-    public class ScriptableObjectCreationConverter : CustomCreationConverter<ScriptableObject>
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            Console.WriteLine(objectType.Name);
-            return typeof(ScriptableObject).IsAssignableFrom(objectType);
-        }
-
-        public override ScriptableObject Create(Type objectType)
-        {
-            return ScriptableObject.CreateInstance(objectType);
-        }
-    }
-
     public class ArrayConverter<T> : JsonConverter
     {
         public override bool CanConvert(Type objectType)
@@ -126,7 +104,8 @@ namespace Nuterra.Biomes.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return JObject.ReadFrom(reader).ToObject<Color>(JsonSerializer.CreateDefault(new JsonSerializerSettings() {
+            return JObject.ReadFrom(reader).ToObject<Color>(JsonSerializer.CreateDefault(new JsonSerializerSettings()
+            {
                 MissingMemberHandling = MissingMemberHandling.Ignore
             }));
         }
@@ -144,6 +123,39 @@ namespace Nuterra.Biomes.JsonConverters
         }
 
         public override bool CanWrite => true;
+        public override bool CanRead => true;
+    }
+
+    public class PrefabGroupConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return typeof(Biome.SceneryDistributor.PrefabGroup) == objectType;
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var obj = JObject.ReadFrom(reader);
+            var res = new Biome.SceneryDistributor.PrefabGroup();
+
+            res.weightingTag = obj["weightingTag"].ToObject<string>();
+            res.weightingTagHash = res.weightingTag.GetHashCode();
+            res.terrainObject = obj["terrainObject"].ToObject<TerrainObject[]>(serializer ?? JsonSerializer.CreateDefault(new JsonSerializerSettings()
+            {
+                Converters = {
+                    new UnityObjectConverter<TerrainObject>()
+                }
+            }));
+            
+            return res;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CanWrite => false;
         public override bool CanRead => true;
     }
 }

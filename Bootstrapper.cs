@@ -14,13 +14,15 @@ namespace Nuterra.Biomes
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.logMessageReceivedThreaded += HandleLogEntry;
 
-            var harmony = HarmonyInstance.Create("nuterra.biomes");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            Resources.LogAsset("Nuterra Biome Injector Library started");
 
             var holder = new GameObject();
             holder.AddComponent<ResourcesLoader>();
 
             GameObject.DontDestroyOnLoad(holder);
+
+            var harmony = HarmonyInstance.Create("nuterra.biomes");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

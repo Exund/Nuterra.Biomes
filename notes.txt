@@ -1,14 +1,35 @@
 ﻿Resources
-
 Biomes
 	Terrain Layers
 		Textures
 		JSON
-	Audio
-		MP3/WAV file (Handled by UnityWebRequest)
+	// Audio (No longer used by the game: Uses FMOD)
+		// MP3/WAV file (Handled by UnityWebRequest)
 	Map generator
 
 	Layers[]
 		Map Generator
 		Scenery Distributor
-		
+
+BiomeGroups
+	Biomes
+	AnimationCurve
+
+
+
+Generation
+BiomeMap handles biome map generation and then heightmap generation
+BiomeGroupDatabase is used to get biomes
+
+
+
+PrefabGroup weighting tags (see BiomeMap.m_SceneryDistributionWeights)
+	trees
+	luxite
+	plumbite
+	titanite
+	carbite
+	rodite
+	oleite
+	erudite
+	celestite
