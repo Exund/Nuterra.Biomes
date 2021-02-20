@@ -1,0 +1,42 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"r": {
+			"type": "number",
+			"description": "Red channel",
+			"minimum": 0,
+			"maximum": 1
+		},
+		"g": {
+			"type": "number",
+			"description": "Green channel",
+			"minimum": 0,
+			"maximum": 1
+		},
+		"b": {
+			"type": "number",
+			"description": "Blue channel",
+			"minimum": 0,
+			"maximum": 1
+		},
+		"a": {
+			"type": "number",
+			"description": "Alpha channel",
+			"minimum": 0,
+			"maximum": 1
+		}
+	},
+	"required": [
+		"r",
+		"g",
+		"b",
+		"a"
+	],
+	"default": {
+		"r": 0,
+		"g": 0,
+		"b": 0,
+		"a": 1
+	}
+}

@@ -1,0 +1,49 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"colorKeys": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"color": {
+						"$ref": "./Color.schema.json",
+						"description": "Color"
+					},
+					"time": {
+						"type": "number",
+						"description": "Time"
+					}
+				}
+			},
+			"description": "Colors"
+		},
+		"alphaKeys": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"alpha": {
+						"type": "number",
+						"description": "Alpha"
+					},
+					"time": {
+						"type": "number",
+						"description": "Time"
+					}
+				}
+			},
+			"description": "Alphas"
+		},
+		"mode": {
+			"type": "string",
+			"enum": [
+				"Blend",
+				"Fixed"
+			],
+			"description": "Mode"
+		}
+	},
+	"required": ["colorKeys", "mode"]
+}

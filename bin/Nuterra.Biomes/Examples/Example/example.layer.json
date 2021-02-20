@@ -1,0 +1,25 @@
+{
+    "$schema": "../../SCHEMAS/TerrainLayer.schema.json",
+    "name": "EXAMPLE_TerrainLayer",
+
+    "diffuseTexture": "rock_02_diffuse.png",
+    "normalMapTexture": "rock_02_normal.png",
+    //"maskMapTexture": "",
+    "tileSize": {
+        "x": 64,
+        "y": 64
+    },
+    "tileOffset": {
+        "x": 0,
+        "y": 0
+    },
+    "specular": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+    },
+    "metallic": 0.1,
+    "smoothness": 0,
+    "normalScale": 1
+}

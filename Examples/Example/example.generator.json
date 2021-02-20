@@ -1,0 +1,37 @@
+{
+    "$schema": "../../SCHEMAS/MapGenerator.schema.json",
+    "name": "ExampleHeightMap",
+    "m_Layers": [
+        {
+            "offset": {
+                "x": 0,
+                "y": 0
+            },
+            "scale": 1,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "amplitude": 4,
+            "bias": 1,
+            "weight": 1,
+            "invert": false,
+            "function": "Zero", // Initial value function
+            // Valid function values (can also be referenced as a number starting from 0):
+            // Trig, Simplex, FastNoise, Voronoi1, Voronoi2, Voronoi3, Zero, One, MinusOne,
+            // FastNoiseQuant8, FastNoiseQuant8Smooth1, FastNoiseQuant8Smooth2, FastNoiseQuant8Smooth3,
+            // FastNoiseQuant16, FastNoiseQuant16Smooth1, FastNoiseQuant16Smooth2, FastNoiseQuant16Smooth3, FastNoiseAbs, SimplexAbs
+            "operations": [], // Operations applied to the initial value
+            "applyOperation": {
+                "param": 0, // Parameter of the operation
+                "index": 0, // Variable index
+                "code": "Null", // Operation code
+                // Valid code values (can also be referenced as a number starting from 0):
+                // Null, Add, Sub, Mul, Div, Min, Max, Abs, Sign, Quant, Store (store input in ), Modify
+                "buffered": false // Use the variable from the buffer at "index" as a parameter instead of "param"
+            }
+        }
+    ],
+    "m_UseLegacy": false,
+    "m_ScaleAll": 0,
+    "m_CutoffThreshold": 1
+}

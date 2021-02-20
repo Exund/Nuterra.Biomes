@@ -21,6 +21,11 @@ Generation
 BiomeMap handles biome map generation and then heightmap generation
 BiomeGroupDatabase is used to get biomes
 
+MapGenerator Layers 
+	p = generated value (point)
+	Function: initial value of the layer (l)
+	Operations: Operation applied to the value
+	Apply Operation: operation applied to "p" with "l" as an additionnal parameter 
 
 
 PrefabGroup weighting tags (see BiomeMap.m_SceneryDistributionWeights)

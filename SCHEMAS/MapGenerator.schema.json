@@ -1,0 +1,185 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "MapGenerator name. Used for referencing"
+		},
+		"m_Layers": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/Layer"
+			},
+			"description": "Layers"
+		},
+		"m_UseLegacy": {
+			"type": "boolean",
+			"description": "Use legacy generation logic",
+			"default": false
+		},
+		"m_ScaleAll": {
+			"type": "number",
+			"description": "Additional layers scale"
+		},
+		"m_CutoffThreshold": {
+			"type": "number",
+			"description": "Cutoff threshold"
+		},
+		"m_RenderGradient": {
+			"$ref": "./Gradient.schema.json",
+			"description": "Render gradient"
+		},
+		"m_RenderColThreshold": {
+			"$ref": "./Color.schema.json",
+			"description": "Render color threshold"
+		}
+	},
+	"required": [
+		"name",
+		"m_Layers",
+		"m_UseLegacy",
+		"m_CutoffThreshold"
+	],
+	"definitions": {
+		"Operation": {
+			"type": "object",
+			"properties": {
+				"param": {
+					"type": "number",
+					"description": "Operation parameter"
+				},
+				"index": {
+					"type": "number",
+					"description": "Variable index"
+				},
+				"code": {
+					"type": "string",
+					"enum": [
+						"Null",
+						"Add",
+						"Sub",
+						"Mul",
+						"Div",
+						"Min",
+						"Max",
+						"Abs",
+						"Sign",
+						"Quant",
+						"Store",
+						"Modify"
+					],
+					"description": "Operation code"
+				},
+				"buffered": {
+					"type": "boolean",
+					"description": "Use the variable from the buffer at \"index\" as a parameter instead of \"param\""
+				}
+			},
+			"required": [
+				"param",
+				"index",
+				"code",
+				"buffered"
+			]
+		},
+		"Layer": {
+			"type": "object",
+			"properties": {
+				"offset": {
+					"description": "Offset",
+					"$ref": "./Vector2.schema.json"
+				},
+				"scale": {
+					"type": "number",
+					"description": "Scale"
+				},
+				"rotation": {
+					"type": "number",
+					"description": "Rotation"
+				},
+				"scaleX": {
+					"type": "number",
+					"description": "X scale"
+				},
+				"scaleY": {
+					"type": "number",
+					"description": "Y scale "
+				},
+				"amplitude": {
+					"type": "number",
+					"description": "Amplitude"
+				},
+				"bias": {
+					"type": "number",
+					"description": "Bias"
+				},
+				"weight": {
+					"type": "number",
+					"description": "Weight"
+				},
+				"invert": {
+					"type": "boolean",
+					"description": "Invert"
+				},
+				"function": {
+					"type": "string",
+					"enum": [
+						"Trig",
+						"Simplex",
+						"FastNoise",
+						"Voronoi1",
+						"Voronoi2",
+						"Voronoi3",
+						"Zero",
+						"One",
+						"MinusOne",
+						"FastNoiseQuant8",
+						"FastNoiseQuant8Smooth1",
+						"FastNoiseQuant8Smooth2",
+						"FastNoiseQuant8Smooth3",
+						"FastNoiseQuant16",
+						"FastNoiseQuant16Smooth1",
+						"FastNoiseQuant16Smooth2",
+						"FastNoiseQuant16Smooth3",
+						"FastNoiseAbs",
+						"SimplexAbs"
+					],
+					"description": "Initial value function"
+				},
+				"operations": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Operation"
+					},
+					"description": "Operations applied to the initial value",
+					"default": []
+				},
+				"applyOperation": {
+					"$ref": "#/definitions/Operation",
+					"description": "Operation applied to the generator final value with layer value as an additionnal parameter",
+					"default": {
+						"param": 0,
+						"index": 0,
+						"code": "Null",
+						"buffered": false
+					}
+				}
+			},
+			"required": [
+				"offset",
+				"scale",
+				"rotation",
+				"scaleX",
+				"scaleY",
+				"amplitude",
+				"bias",
+				"weight",
+				"invert",
+				"function",
+				"operations",
+				"applyOperation"
+			]
+		}
+	}
+}

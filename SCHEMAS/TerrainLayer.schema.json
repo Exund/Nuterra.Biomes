@@ -1,0 +1,50 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "TerrainLayer name. Used for referencing"
+		},
+		"diffuseTexture": {
+			"type": "string",
+			"description": "Filename of the base color texture"
+		},
+		"normalMapTexture": {
+			"type": "string",
+			"description": "Filename of the normal map texture"
+		},
+		"maskMapTexture": {
+			"type": "string"
+		},
+		"tileSize": {
+			"description": "Size",
+			"$ref": "./Vector2.schema.json"
+		},
+		"tileOffset": {
+			"description": "Offset",
+			"$ref": "./Vector2.schema.json"
+		},
+		"specular": {
+			"description": "Specular color",
+			"$ref": "./Color.schema.json"
+		},
+		"metallic": {
+			"description": "Metallicness",
+			"type": "number"
+		},
+		"smoothness": {
+			"description": "Smoothness",
+			"type": "number"
+		},
+		"normalScale": {
+			"description": "Normal map scale",
+			"type": "number"
+		}
+	},
+	"required": [
+		"name",
+		"diffuseTexture",
+		"normalMapTexture"
+	]
+}

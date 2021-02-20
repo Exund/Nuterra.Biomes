@@ -83,7 +83,7 @@ namespace Nuterra.Biomes.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return JArray.FromObject(reader.Value).ToObject(typeof(T).MakeArrayType());
+            return JArray.FromObject(reader.Value).ToObject(typeof(T).MakeArrayType(), serializer);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

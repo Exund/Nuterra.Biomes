@@ -1,0 +1,522 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "Biome name"
+		},
+		"Reference": {
+		  "type": "string",
+		  "description": "Vanilla biome name to use as a base"
+		},
+		"BiomeGroupName": {
+			"type": "string",
+			"description": "BiomeGroup name into which this biome will be added"
+		},
+		"BiomeWeight": {
+			"type": "number",
+			"description": "Weight of the biome in the biome group specified by BiomeGroupName"
+		},
+		"editorRenderColour": {
+			"$ref": "./Color.schema.json",
+			"description": "Editor render color"
+		},
+		"heightMapGenerator": {
+			"type": "string",
+			"description": "Name of MapGenerator used for terrain height generation"
+		},
+		"multiTextureGenerator": {
+			"type": "string",
+			"description": "Name of MapGenerator used for terrain texture blending"
+		},
+		"layers": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/DetailLayer"
+			},
+			"description": "Detail layers (clutter, resource nodes)",
+			"default": []
+		},
+		"m_MainMaterialLayer": {
+			"type": "string",
+			"description": "Main TerrainLayer name"
+		},
+		"m_AltMaterialLayer": {
+			"type": "string",
+			"description": "Alternative TerrainLayer name"
+		},
+		"textureBlendSteepnessRange": {
+			"$ref": "./Vector2.schema.json",
+			"description": "Texture blend steepness range",
+			"default": {
+				"x": 0,
+				"y": 0.05
+			}
+		},
+		"textureBlendSteepnessWeighting": {
+			"type": "number",
+			"description": "Texture blend steepness weighting",
+			"default": 0.5
+		},
+		"m_DayLighting": {
+			"$ref": "#/definitions/BiomeTODLightingParams",
+			"description": "Day lighting"
+		},
+		"m_NightLighting": {
+			"$ref": "#/definitions/BiomeTODLightingParams",
+			"description": "Night lighting"
+		},
+		"m_CloudParams": {
+			"$ref": "#/definitions/BiomeCloudParams",
+			"description": "Cloud parameters"
+		},
+		"m_DustVFXColor": {
+			"$ref": "./Color.schema.json",
+			"description": "Wheels dust particles color"
+		},
+		"impactEffects": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/ImpactEffectLookup"
+			},
+			"description": "Projectiles impact effects",
+			"default": []
+		},
+		"m_AllowLandmarks": {
+			"type": "boolean",
+			"description": "Allow landmarks",
+			"default": true
+		},
+		"m_AllowVendors": {
+			"type": "boolean",
+			"description": "Allow vending stations",
+			"default": true
+		},
+		"m_AllowStuntRamps": {
+			"type": "boolean",
+			"description": "Allow stunt ramps"
+		},
+		"surfaceFriction": {
+			"type": "number",
+			"description": "Surface friction",
+			"default": 0.7
+		},
+		"m_BiomeType": {
+			"type": "string",
+			"description": "Biome type",
+			"enum": [
+				"Grassland",
+				"Desert",
+				"SaltFlats",
+				"Mountains",
+				"Pillars",
+				"Ice"
+			]
+		}
+	},
+	"required": ["name"],
+	"if": {
+		"properties": {
+			"Reference": {
+				"const": null
+			}
+		}
+	},
+	"then": {
+		"required": [
+			"heightMapGenerator",
+			"multiTextureGenerator",
+			"layers",
+			"m_MainMaterialLayer",
+			"m_AltMaterialLayer",
+			"m_DayLighting",
+			"m_NightLighting",
+			"m_CloudParams",
+			"m_DustVFXColor",
+			"impactEffects",
+			"m_AllowStuntRamps",
+			"m_BiomeType"
+		]
+		
+	},
+	"definitions": {
+		"DistanceMethod": {
+			"type": "string",
+			"enum": [
+				"Length",
+				"Length2",
+				"Length4",
+				"Manhattan",
+				"Chebychev",
+				"Minkowski4",
+				"Minkowski5"
+			]
+		},
+		"SpawnModifier": {
+			"type": "string",
+			"enum": [
+				"Null",
+				"ScaleByGenerator",
+				"CullBySteepness"
+			]
+		},
+		"RangeFloat": {
+			"type": "object",
+			"properties": {
+				"_min": {
+					"type": "number",
+					"description": "Minimum"
+				},
+				"_max": {
+					"type": "number",
+					"description": "Maximum"
+				}
+			},
+			"required": [
+				"_min",
+				"_max"
+			]
+		},
+		"SpawnModifierParams": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/definitions/SpawnModifier",
+					"description": "Type"
+				},
+				"generator": {
+					"type": "string",
+					"description": "Name of the MapGenerator"
+				},
+				"range": {
+					"$ref": "#/definitions/RangeFloat",
+					"description": "Range"
+				}
+			},
+			"required": [
+				"type",
+				"generator",
+				"range"
+			]
+		},
+		"PrefabGroup": {
+			"type": "object",
+			"properties": {
+				"weightingTag": {
+					"type": "string",
+					"description": "Tag",
+					"enum": [
+						"",
+						"trees",
+						"luxite",
+						"plumbite",
+						"titanite",
+						"carbite",
+						"rodite",
+						"oleite",
+						"erudite",
+						"celestite"
+					],
+					"default": ""
+				},
+				"terrainObject": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "Names of the TerrainObjects",
+					"default": []
+				}
+			},
+			"required": [
+				"weightingTag",
+				"terrainObject"
+			]
+		},
+		"UpgradeRule": {
+			"type": "object",
+			"properties": {
+				"upgradeChance": {
+					"type": "number",
+					"description": "Chance of upgrade"
+				},
+				"randomPrefab": {
+					"type": "boolean",
+					"description": "Use a random prefab"
+				},
+				"upgrade": {
+					"$ref": "#/definitions/PrefabGroup",
+					"description": "Upgrade"
+				}
+			},
+			"required": [
+				"upgradeChance",
+				"randomPrefab",
+				"upgrade"
+			]
+		},
+		"SceneryDistributor": {
+			"type": "object",
+			"properties": {
+				"layer0Translation": {
+					"$ref": "./Vector2.schema.json",
+					"description": "Layer 0 translation"
+				},
+				"layer0Rotation": {
+					"type": "number",
+					"description": "Layer 0 rotation"
+				},
+				"layer0Scale": {
+					"type": "number",
+					"description": "Layer 0 scale",
+					"default": 1
+				},
+				"layer0DistMethod": {
+					"$ref": "#/definitions/DistanceMethod",
+					"description": "Layer 0 Distance method",
+					"default": "Length2"
+				},
+				"layer1Translation": {
+					"$ref": "./Vector2.schema.json",
+					"description": "Layer 1 translation"
+				},
+				"layer1Rotation": {
+					"type": "number",
+					"description": "Layer 1 rotation"
+				},
+				"layer1Scale": {
+					"type": "number",
+					"description": "Layer 1 scale",
+					"default": 1
+				},
+				"layer1DistMethod": {
+					"$ref": "#/definitions/DistanceMethod",
+					"description": "Layer 1 Distance method",
+					"default": "Length4"
+				},
+				"bandTolerance": {
+					"type": "number",
+					"description": "Band tolerance",
+					"default": 1
+				},
+				"enableRegions": {
+					"type": "boolean",
+					"description": "Enable regions",
+					"default": true
+				},
+				"spawnModifiers": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/SpawnModifierParams"
+					},
+					"default": []
+				},
+				"decoration": {
+					"$ref": "#/definitions/PrefabGroup",
+					"description": "Decoration"
+				},
+				"basic": {
+					"$ref": "#/definitions/PrefabGroup",
+					"description": "Basic"
+				},
+				"variants": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PrefabGroup"
+					},
+					"description": "Variants",
+					"default": []
+				},
+				"nonBasicThreshold": {
+					"type": "number",
+					"description": "Non basic objects threshold",
+					"default": 0.5
+				},
+				"upgradeRules": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/UpgradeRule"
+					},
+					"description": "Upgrade rules",
+					"default": []
+				}
+			},
+			"required": [
+				"layer0Translation",
+				"layer0Rotation",
+				"layer0Scale",
+				"layer0DistMethod",
+				"layer1Translation",
+				"layer1Rotation",
+				"layer1Scale",
+				"layer1DistMethod",
+				"bandTolerance",
+				"enableRegions",
+				"spawnModifiers",
+				"decoration",
+				"basic",
+				"variants",
+				"nonBasicThreshold",
+				"upgradeRules"
+			]
+		},
+		"DetailLayer": {
+			"type": "object",
+			"properties": {
+				"generator": {
+					"type": "string",
+					"description": "Name of the MapGenerator"
+				},
+				"distributor": {
+					"$ref": "#/definitions/SceneryDistributor",
+					"description": "Scenery distributor"
+				}
+			},
+			"required": [
+				"generator",
+				"distributor"
+			]
+		},
+		"BiomeTODLightingParams": {
+			"type": "object",
+			"properties": {
+				"m_SunOrMoonColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Sun/Moon color"
+				},
+				"m_LightColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Light color"
+				},
+				"m_RayColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Ray color"
+				},
+				"m_SkyColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Sky color"
+				},
+				"m_CloudColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Cloud color"
+				},
+				"m_FogColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Fog color"
+				},
+				"m_AmbientColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Ambient color"
+				},
+				"m_DustVFXColour": {
+					"$ref": "./Gradient.schema.json",
+					"description": "Dust VFX color"
+				}
+			},
+			"required": [
+				"m_SunOrMoonColour",
+				"m_LightColour",
+				"m_RayColour",
+				"m_SkyColour",
+				"m_CloudColour",
+				"m_FogColour",
+				"m_AmbientColour",
+				"m_DustVFXColour"
+			]
+		},
+		"TOD_CloudParameters": {
+			"type": "object",
+			"properties": {
+				"Size": {
+					"type": "number",
+					"description": "Size",
+					"minimum": 1,
+					"default": 2
+				},
+				"Opacity": {
+					"type": "number",
+					"description": "Opacity",
+					"minimum": 0,
+					"maximum": 1,
+					"default": 1
+				},
+				"Coverage": {
+					"type": "number",
+					"description": "Coverage",
+					"minimum": 0,
+					"maximum": 1,
+					"default": 0.3
+				},
+				"Sharpness": {
+					"type": "number",
+					"description": "Sharpness",
+					"minimum": 0,
+					"maximum": 1,
+					"default": 0.5
+				},
+				"Attenuation": {
+					"type": "number",
+					"description": "Attenuation",
+					"minimum": 0,
+					"maximum": 1,
+					"default": 0.5
+				},
+				"Saturation": {
+					"type": "number",
+					"description": "Saturation",
+					"minimum": 0,
+					"maximum": 1,
+					"default": 0.5
+				},
+				"Scattering": {
+					"type": "number",
+					"description": "Scattering",
+					"minimum": 0,
+					"default": 1
+				},
+				"Brightness": {
+					"type": "number",
+					"description": "Brightness",
+					"minimum": 0,
+					"default": 1.5
+				}
+			},
+			"required": [
+				"Size",
+				"Opacity",
+				"Coverage",
+				"Sharpness",
+				"Attenuatio",
+				"Saturation",
+				"Scattering",
+				"Brightness"
+			]
+		},
+		"BiomeCloudParams": {
+			"type": "object",
+			"properties": {
+				"m_Clouds": {
+					"$ref": "#/definitions/TOD_CloudParameters",
+					"description": "Cloud parameters"
+				}
+			},
+			"required": [
+				"m_Clouds"
+			]
+		},
+		"ImpactEffectLookup": {
+			"type": "object",
+			"properties": {
+				"projectileName": {
+					"type": "string",
+					"description": "Projectile name"
+				},
+				"effectPrefab": {
+					"type": "string",
+					"description": "Transform name"
+				}
+			}
+		}
+	}
+}

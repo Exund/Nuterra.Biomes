@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -336,7 +336,13 @@ namespace Nuterra.Biomes
                             JsonConvert.PopulateObject(generatorJSON.ToString(), generator_base, new JsonSerializerSettings()
                             {
                                 MissingMemberHandling = MissingMemberHandling.Ignore,
-                                Converters = { new JsonConverters.ArrayConverter<MapGenerator.Layer>() }
+                                Converters = {
+                                    new JsonConverters.ArrayConverter<MapGenerator.Layer>(),
+                                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                                    {
+                                        AllowIntegerValues = true
+                                    }
+                                }
                             });
 
                             var layers = ((JArray)generatorJSON["m_Layers"]).ToObject<MapGenerator.Layer[]>();
@@ -385,7 +391,11 @@ namespace Nuterra.Biomes
                     new JsonConverters.UnityObjectConverter<TerrainLayer>(),
                     new JsonConverters.UnityObjectConverter<MapGenerator>(),
                     new JsonConverters.UnityObjectConverter<TerrainObject>(),
-                    new JsonConverters.PrefabGroupConverter()
+                    new JsonConverters.PrefabGroupConverter(),
+                    new Newtonsoft.Json.Converters.StringEnumConverter()
+                    {
+                        AllowIntegerValues = true
+                    }
                 }
             };
 
@@ -405,11 +415,11 @@ namespace Nuterra.Biomes
                         {
                             var biome = ScriptableObject.CreateInstance<Biome>();
 
-                            if(biomeJSON["Reference"] != null)
+                            if (biomeJSON["Reference"] != null)
                             {
                                 var refName = biomeJSON["Reference"].ToString();
                                 var reference = GetObjectFromGameResources<Biome>(refName);
-                                if(!reference)
+                                if (!reference)
                                 {
                                     LogError(string.Format("Biome reference \"{0}\" for Biome \"{1}\" doesn't exists!", refName, name), BiomesTag);
                                     continue;
@@ -428,7 +438,7 @@ namespace Nuterra.Biomes
                                     {
                                         field.SetValue(biome, biomeJSON[field.Name].ToObject(field.FieldType, serializer));
                                     }
-                                } 
+                                }
                                 catch (Exception e)
                                 {
                                     Console.WriteLine(field.Name);
@@ -436,7 +446,7 @@ namespace Nuterra.Biomes
                                 }
                             }
 
-                            if(biomeJSON["BiomeGroupName"] != null)
+                            if (biomeJSON["BiomeGroupName"] != null)
                             {
                                 biomeWrappers.Add(new BiomeWrapper()
                                 {

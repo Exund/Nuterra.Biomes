@@ -1,0 +1,360 @@
+{
+	"$schema": "../../SCHEMAS/Biome.schema.json",
+	"name": "Example",
+
+	"Reference": "CanyonsBiome",
+	"BiomeGroupName": "GrasslandGroupStart",
+
+	"editorRenderColour": {
+		"r": 0,
+		"g": 0,
+		"b": 1,
+		"a": 1
+	},
+	"heightMapGenerator": "ExampleHeightMap",
+	/*"multiTextureGenerator": "BasicGrasslandBlendMap",*/
+	"layers": [
+		{
+			"generator": "BasicGrasslandAllRocks",
+			"distributor": {
+				"layer0Translation": {
+					"x": 0,
+					"y": 0
+				},
+				"layer0Rotation": 0,
+				"layer0Scale": 0.5,
+				"layer0DistMethod": "Length2",
+				"layer1Translation": {
+					"x": 0,
+					"y": 0
+				},
+				"layer1Rotation": 0,
+				"layer1Scale": 0.05,
+				"layer1DistMethod": "Length4",
+				"bandTolerance": 0,
+				"enableRegions": false,
+				"spawnModifiers": [],
+				"decoration": {
+					"weightingTag": "",
+					//"weightingTagHash": 0,
+					"terrainObject": [
+						"LuxiteOutcrop1"
+					]
+				},
+				"basic": {
+					"weightingTag": "",
+					"weightingTagHash": 0,
+					"terrainObject": [
+						"RockGrassland",
+						"Sign_Minefield"
+					]
+				},
+				"variants": [
+					{
+						"weightingTag": "plumbite",
+						//"weightingTagHash": -1854289780,
+						"terrainObject": [
+							"RockGrassland_PlumbiteSeam"
+						]
+					},
+					{
+						"weightingTag": "titanite",
+						//"weightingTagHash": -1879880690,
+						"terrainObject": [
+							"RockGrassland_TitaniteSeam"
+						]
+					}
+				],
+				"nonBasicThreshold": 0.84,
+				"upgradeRules": []
+			}
+		}
+	],
+	"m_MainMaterialLayer": "EXAMPLE_TerrainLayer",
+	"m_AltMaterialLayer": "Rock_Light_TerrainLayer" //,
+	/*"textureBlendSteepnessRange": {
+		"x": 0,
+		"y": 0.04
+	},
+	"textureBlendSteepnessWeighting": 0.5,
+	"m_DayLighting": {
+		"m_SunOrMoonColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0.9921569,
+						"g": 0.9921569,
+						"b": 0.9921569,
+						"a": 1
+					}
+				},
+				{
+					"time": 0.7237659266041047,
+					"color": {
+						"r": 0.9882353,
+						"g": 0.9921569,
+						"b": 0.9647059,
+						"a": 1
+					}
+				},
+				{
+					"time": 0.8757610437170977,
+					"color": {
+						"r": 0.9803922,
+						"g": 1,
+						"b": 0.6666667,
+						"a": 1
+					}
+				},
+				{
+					"time": 1,
+					"color": {
+						"r": 0.9921569,
+						"g": 0.6705883,
+						"b": 0.1960784,
+						"a": 1
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_LightColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_RayColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_SkyColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_CloudColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_FogColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_AmbientColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_DustVFXColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		}
+	},
+	"m_NightLighting": {
+		"m_SunOrMoonColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_LightColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_RayColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_SkyColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_CloudColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_FogColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_AmbientColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		},
+		"m_DustVFXColour": {
+			"colorKeys": [
+				{
+					"time": 0,
+					"color": {
+						"r": 0,
+						"g": 0,
+						"b": 0,
+						"a": 0
+					}
+				}
+			],
+			"mode": 0
+		}
+	},
+	"m_CloudParams": {
+		"m_Clouds": {
+			"Size": 2,
+			"Opacity": 1,
+			"Coverage": 0.3,
+			"Sharpness": 0.5,
+			"Attenuation": 0.5,
+			"Saturation": 0.5,
+			"Scattering": 1,
+			"Brightness": 1.5
+		}
+	},*/
+	//"m_WeatherParticles": "",
+	/*"m_DustVFXColor": {
+		"r": 0.4588235,
+		"g": 0.4431373,
+		"b": 0.2470588,
+		"a": 0.3137255
+	},
+	"impactEffects": [],
+	"m_AllowLandmarks": true,
+	"m_AllowVendors": true,
+	"m_AllowStuntRamps": false,
+	"surfaceFriction": 0.9,
+	"m_BiomeType": 0*/
+}
