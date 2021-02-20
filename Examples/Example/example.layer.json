@@ -1,5 +1,4 @@
 {
-    "$schema": "../../SCHEMAS/TerrainLayer.schema.json",
     "name": "EXAMPLE_TerrainLayer",
 
     "diffuseTexture": "rock_02_diffuse.png",

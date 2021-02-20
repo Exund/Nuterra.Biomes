@@ -1,5 +1,4 @@
 {
-	"$schema": "../../SCHEMAS/Biome.schema.json",
 	"name": "Example",
 
 	"Reference": "CanyonsBiome",

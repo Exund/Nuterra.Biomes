@@ -38,3 +38,38 @@ PrefabGroup weighting tags (see BiomeMap.m_SceneryDistributionWeights)
 	oleite
 	erudite
 	celestite
+
+
+
+VS Code JSON Schemas config
+In VS Code go to File > Preferences > Settings 
+Then to Extensions > JSON
+Then search for "Schemas" and click "Edit in settings.json"
+Then add this at the end: 
+
+"json.schemas": [
+    {
+        "fileMatch": [
+            "*.biome.json"
+        ],
+        "url": "https://raw.githubusercontent.com/Exund/Nuterra.Biomes/master/SCHEMAS/Biome.schema.json"
+    },
+    {
+        "fileMatch": [
+            "*.generator.json"
+        ],
+        "url": "https://raw.githubusercontent.com/Exund/Nuterra.Biomes/master/SCHEMAS/MapGenerator.schema.json"
+    },
+    {
+        "fileMatch": [
+            "*.layer.json"
+        ],
+        "url": "https://raw.githubusercontent.com/Exund/Nuterra.Biomes/master/SCHEMAS/TerrainLayer.schema.json"
+    },
+    {
+        "fileMatch": [
+            "*.group.json"
+        ],
+        "url": "https://raw.githubusercontent.com/Exund/Nuterra.Biomes/master/SCHEMAS/BiomeGroup.schema.json"
+    }
+]
