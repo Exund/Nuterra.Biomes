@@ -2,11 +2,16 @@
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
 	"properties": {
+		"name": {
+			"type": "string",
+			"description": "Biome group name"
+		},
 		"m_Biomes": {
 			"type": "array",
 			"items": {
 				"type": "string"
 			},
+			"minItems": 1,
 			"description": "Biomes names"
 		},
 		"m_BiomeWeights": {
@@ -14,77 +19,18 @@
 			"items": {
 				"type": "number"
 			},
+			"minItems": 1,
 			"description": "Biomes weights"
 		},
 		"m_WeightingByDistance": {
-			"$ref": "#/definitions/AnimationCurve",
+			"$ref": "./ExtendedAnimationCurve.schema.json",
 			"description": "Weighting by distance"
 		}
 	},
 	"required": [
+		"name",
 		"m_Biomes",
 		"m_BiomeWeights",
 		"m_WeightingByDistance"
-	],
-	"definitions": {
-		"Keyframe": {
-			"type": "object",
-			"properties": {
-				"m_Time": {
-					"type": "number",
-					"description": "Time"
-				},
-				"m_Value": {
-					"type": "number",
-					"description": "Value"
-				},
-				"m_InTangent": {
-					"type": "number",
-					"description": "In tangent",
-					"default": 0
-				},
-				"m_OutTangent": {
-					"type": "number",
-					"description": "Out tangent",
-					"default": 0
-				},
-				"m_WeightedMode": {
-					"type": "number",
-					"description": "Weighted mode",
-					"default": 0
-				},
-				"m_InWeight": {
-					"type": "number",
-					"description": "In weight",
-					"default": 0
-				},
-				"m_OutWeight": {
-					"type": "number",
-					"description": "Out weight",
-					"default": 0
-				}
-			},
-			"required": [
-				"m_Time",
-				"m_Value",
-				"m_InTangent",
-				"m_OutTangent",
-				"m_WeightedMode",
-				"m_InWeight",
-				"m_OutWeight"
-			]
-		},
-		"AnimationCurve": {
-			"type": "object",
-			"properties": {
-				"keys": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Keyframe"
-					},
-					"description": "Keys"
-				}
-			}
-		}
-	}
+	]
 }

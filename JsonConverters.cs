@@ -146,7 +146,64 @@ namespace Nuterra.Biomes.JsonConverters
                     new UnityObjectConverter<TerrainObject>()
                 }
             }));
-            
+
+            return res;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CanWrite => false;
+        public override bool CanRead => true;
+    }
+
+    public class AnimationCurveConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return typeof(AnimationCurve) == objectType;
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var obj = JObject.ReadFrom(reader);
+            AnimationCurve res = null;
+
+            if (obj["keys"] != null)
+            {
+                res = new AnimationCurve(obj["keys"].ToObject<Keyframe[]>());
+            }
+            else if (obj["constant"] != null)
+            {
+                var constant = obj["constant"];
+                var timeStart = constant["timeStart"].ToObject<float>();
+                var timeEnd = constant["timeEnd"].ToObject<float>();
+                var value = constant["value"].ToObject<float>();
+                res = AnimationCurve.Constant(timeStart, timeEnd, value);
+            }
+            else if (obj["linear"] != null)
+            {
+                var linear = obj["linear"];
+                var timeStart = linear["timeStart"].ToObject<float>();
+                var valueStart = linear["valueStart"].ToObject<float>();
+                var timeEnd = linear["timeEnd"].ToObject<float>();
+                var valueEnd = linear["valueEnd"].ToObject<float>();
+                res = AnimationCurve.Linear(timeStart, valueStart, timeEnd, valueEnd);
+            }
+            else if (obj["easeInOut"] != null)
+            {
+                var easeInOut = obj["easeInOut"];
+                var timeStart = easeInOut["timeStart"].ToObject<float>();
+                var valueStart = easeInOut["valueStart"].ToObject<float>();
+                var timeEnd = easeInOut["timeEnd"].ToObject<float>();
+                var valueEnd = easeInOut["valueEnd"].ToObject<float>();
+                res = AnimationCurve.EaseInOut(timeStart, valueStart, timeEnd, valueEnd);
+            }
+
+            Console.WriteLine(JObject.FromObject(res));
+
             return res;
         }
 

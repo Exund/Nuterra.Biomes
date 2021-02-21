@@ -337,7 +337,6 @@ namespace Nuterra.Biomes
                             {
                                 MissingMemberHandling = MissingMemberHandling.Ignore,
                                 Converters = {
-                                    new JsonConverters.ArrayConverter<MapGenerator.Layer>(),
                                     new Newtonsoft.Json.Converters.StringEnumConverter()
                                     {
                                         AllowIntegerValues = true
@@ -488,6 +487,7 @@ namespace Nuterra.Biomes
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 Converters = {
                     new JsonConverters.UnityObjectConverter<Biome>(),
+                    new JsonConverters.AnimationCurveConverter()
                 }
             };
 

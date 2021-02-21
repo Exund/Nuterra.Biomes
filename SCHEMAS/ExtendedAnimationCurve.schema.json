@@ -1,0 +1,101 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"keys": {
+			"type": "array",
+			"items": {
+				"$ref": "./AnimationCurve.schema.json#/definitions/Keyframe"
+			}
+		},
+		"constant": {
+			"$ref": "#/definitions/Constant"
+		},
+		"linear": {
+			"$ref": "#/definitions/Linear"
+		},
+		"easeInOut": {
+			"$ref": "#/definitions/EaseInOut"
+		}
+	},
+	"minProperties": 1,
+	"maxProperties": 1,
+	"definitions": {
+		"Constant": {
+			"type": "object",
+			"properties": {
+				"timeStart": {
+					"type": "number",
+					"description": "Start time"
+				},
+				"timeEnd": {
+					"type": "number",
+					"description": "End time"
+				},
+				"value": {
+					"type": "number",
+					"description": "Value"
+				}
+			},
+			"required": [
+				"timeStart",
+				"timeEnd",
+				"value"
+			]
+		},
+		"Linear": {
+			"type": "object",
+			"properties": {
+				"timeStart": {
+					"type": "number",
+					"description": "Start time"
+				},
+				"valueStart": {
+					"type": "number",
+					"description": "Start value"
+				},
+				"timeEnd": {
+					"type": "number",
+					"description": "End time"
+				},
+				"valueEnd": {
+					"type": "number",
+					"description": "End value"
+				}
+			},
+			"required": [
+				"timeStart",
+				"valueStart",
+				"timeEnd",
+				"valueEnd"
+			]
+		},
+		"EaseInOut": {
+			"type": "object",
+			"properties": {
+				"timeStart": {
+					"type": "number",
+					"description": "Start time"
+				},
+				"valueStart": {
+					"type": "number",
+					"description": "Start value"
+				},
+				"timeEnd": {
+					"type": "number",
+					"description": "End time"
+				},
+				"valueEnd": {
+					"type": "number",
+					"description": "End value"
+				}
+			},
+			"required": [
+				"timeStart",
+				"valueStart",
+				"timeEnd",
+				"valueEnd"
+			]
+		}
+	}
+}
