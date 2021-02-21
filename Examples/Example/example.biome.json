@@ -1,9 +1,7 @@
 {
 	"name": "Example",
-
 	"Reference": "CanyonsBiome",
 	"BiomeGroupName": "GrasslandGroupStart",
-
 	"editorRenderColour": {
 		"r": 0,
 		"g": 0,
@@ -356,5 +354,4 @@
 	"m_AllowStuntRamps": false,
 	"surfaceFriction": 0.9,
 	"m_BiomeType": 0*/
-	
 }

@@ -1,0 +1,17 @@
+{
+	"name": "ExampleGroup",
+	"m_Biomes": [
+		"Example"
+	],
+	"m_BiomeWeights": [
+		1
+	],
+	"m_WeightingByDistance": {
+		"linear": {
+			"timeStart": 0,
+			"valueStart": 0,
+			"timeEnd": 1,
+			"valueEnd": 1
+		}
+	}
+}

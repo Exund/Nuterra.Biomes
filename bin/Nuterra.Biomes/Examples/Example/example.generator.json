@@ -1,5 +1,4 @@
 {
-    "$schema": "../../SCHEMAS/MapGenerator.schema.json",
     "name": "ExampleHeightMap",
     "m_Layers": [
         {

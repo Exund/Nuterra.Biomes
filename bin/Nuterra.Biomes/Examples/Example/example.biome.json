@@ -1,10 +1,7 @@
 {
-	"$schema": "../../SCHEMAS/Biome.schema.json",
 	"name": "Example",
-
 	"Reference": "CanyonsBiome",
 	"BiomeGroupName": "GrasslandGroupStart",
-
 	"editorRenderColour": {
 		"r": 0,
 		"g": 0,
