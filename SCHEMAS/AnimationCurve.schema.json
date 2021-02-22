@@ -8,6 +8,12 @@
 				"$ref": "#/definitions/Keyframe"
 			},
 			"description": "Keys"
+		},
+		"preWrapMode": {
+			"$ref": "#/definitions/WrapMode"
+		},
+		"postWrapMode": {
+			"$ref": "#/definitions/WrapMode"
 		}
 	},
 	"required": [
@@ -59,6 +65,17 @@
 				"m_WeightedMode",
 				"m_InWeight",
 				"m_OutWeight"
+			]
+		},
+		"WrapMode": {
+			"type":"string",
+			"enum": [
+				"Once",
+				"Loop",
+				"PingPong",
+				"Default",
+				"ClampForever",
+				"Clamp"			
 			]
 		}
 	}

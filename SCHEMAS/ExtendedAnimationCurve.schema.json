@@ -16,10 +16,128 @@
 		},
 		"easeInOut": {
 			"$ref": "#/definitions/EaseInOut"
+		},
+		"preWrapMode": {
+			"$ref": "./AnimationCurve.schema.json#/definitions/WrapMode"
+		},
+		"postWrapMode": {
+			"$ref": "./AnimationCurve.schema.json#/definitions/WrapMode"
 		}
 	},
-	"minProperties": 1,
-	"maxProperties": 1,
+	"oneOf": [
+		{
+			"required": [
+				"keys"
+			],
+			"allOf": [
+				{
+					"not": {
+						"required": [
+							"constant"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"linear"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"easeInOut"
+						]
+					}
+				}
+			]
+		},
+		{
+			"required": [
+				"constant"
+			],
+			"allOf": [
+				{
+					"not": {
+						"required": [
+							"keys"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"linear"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"easeInOut"
+						]
+					}
+				}
+			]
+		},
+		{
+			"required": [
+				"linear"
+			],
+			"allOf": [
+				{
+					"not": {
+						"required": [
+							"keys"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"constant"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"easeInOut"
+						]
+					}
+				}
+			]
+		},
+		{
+			"required": [
+				"easeInOut"
+			],
+			"allOf": [
+				{
+					"not": {
+						"required": [
+							"keys"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"constant"
+						]
+					}
+				},
+				{
+					"not": {
+						"required": [
+							"linear"
+						]
+					}
+				}
+			]
+		}
+	],
 	"definitions": {
 		"Constant": {
 			"type": "object",
