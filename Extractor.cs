@@ -168,7 +168,7 @@ namespace Nuterra.Biomes
 
             if(selected == -1)
             {
-                rect.height = GUI.skin.button.CalcHeight(new GUIContent("A"), 1) * (choices.Length + 3);
+                rect.height = GUI.skin.button.CalcHeight(new GUIContent("A"), 1) * (choices.Length + 4);
             }
             else
             {
@@ -182,6 +182,13 @@ namespace Nuterra.Biomes
         {
             var maxWidth = GUILayout.MaxWidth(rect.width - GUI.skin.verticalScrollbar.fixedWidth);
 
+            if (ManGameMode.inst.GetIsInPlayableMode())
+            {
+                var tile = ManWorld.inst.TileManager.LookupTile(Singleton.playerPos, false);
+                var cell = ManWorld.inst.TileManager.GetMapCell(tile, Singleton.playerPos);
+                GUILayout.Label("Current Biome: ");
+                GUILayout.Label(ManWorld.inst.CurrentBiomeMap.LookupBiome(cell.Index(0)).name);
+            }
 
             if (selected == 0)
             {

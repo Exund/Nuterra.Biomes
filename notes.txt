@@ -28,6 +28,18 @@ MapGenerator Layers
 	Apply Operation: operation applied to "p" with "l" as an additionnal parameter 
 
 
+	Layers algo
+	let "p" be the generated point
+	p = 0
+	for each layer in generator
+	  let "l" be the layer value
+	  l = layer.function()
+	  for each operation in layer
+		l = operation(l, variable_buffer)
+	  p = layer.apply_operation(p, l)
+	clamp p between -1 and 1
+	return p
+
 PrefabGroup weighting tags (see BiomeMap.m_SceneryDistributionWeights)
 	trees
 	luxite
