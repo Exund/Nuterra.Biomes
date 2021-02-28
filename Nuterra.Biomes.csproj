@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="BiomeWrapper.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Extractor.cs" />
     <Compile Include="JsonConverters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.cs" />

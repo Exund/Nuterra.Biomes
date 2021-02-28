@@ -29,7 +29,7 @@ namespace Nuterra.Biomes
             foreach (var item in Resources.biomeWrappers)
             {
                 var group = Resources.GetObjectFromResources<BiomeGroup>(item.biomeGroupName);
-                if(group)
+                if (group)
                 {
                     var biomes = ((Biome[])m_Biomes.GetValue(group)).ToList();
                     biomes.Add(item.biome);
@@ -51,8 +51,9 @@ namespace Nuterra.Biomes
             var BiomeMap_T = typeof(BiomeMap);
             var MainBiomeMap = Resources.GetObjectFromGameResources<BiomeMap>("MainBiomeMap");
             var m_BiomeGroups = BiomeMap_T.GetField("m_BiomeGroups", bindings);
-            if (Resources.userResources.TryGetValue(typeof(BiomeGroup), out var customGroups)) {
-                
+            if (Resources.userResources.TryGetValue(typeof(BiomeGroup), out var customGroups))
+            {
+
                 var groups = ((BiomeGroup[])m_BiomeGroups.GetValue(MainBiomeMap)).ToList();
 
                 foreach (var group in customGroups)
@@ -67,20 +68,11 @@ namespace Nuterra.Biomes
             try
             {
                 var m_BiomeGroupDatabase = BiomeMap_T.GetField("m_BiomeGroupDatabase", bindings);
-                Console.WriteLine("m_BiomeGroupDatabase");
                 m_BiomeGroupDatabase.SetValue(MainBiomeMap, null);
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e);
-            }
-
-            foreach (var item in ((BiomeGroup[])m_BiomeGroups.GetValue(MainBiomeMap)).ToList())
-            {
-                Console.WriteLine(item.name);
-                for (int i = 0; i < item.Biomes.Length; i++)
-                {
-                    Console.WriteLine("\t" + item.Biomes[i].name + " " + item.BiomeWeights[Math.Min(i, item.BiomeWeights.Length)]);
-                }
             }
 
             Resources.LogAsset("Biome injection ended", Resources.MetaTag);

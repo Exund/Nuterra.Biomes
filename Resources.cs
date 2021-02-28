@@ -16,10 +16,10 @@ namespace Nuterra.Biomes
     public static class Resources
     {
         public static readonly string BiomesFolderPath = Path.Combine(Application.dataPath, "../Custom Biomes");
-        public static readonly string BiomesExtension = "*.biome.json";
-        public static readonly string TerrainLayerExtension = "*.layer.json";
-        public static readonly string MapGeneratorExtension = "*.generator.json";
-        public static readonly string BiomeGroupsExtension = "*.group.json";
+        public static readonly string BiomesExtension = ".biome.json";
+        public static readonly string TerrainLayerExtension = ".layer.json";
+        public static readonly string MapGeneratorExtension = ".generator.json";
+        public static readonly string BiomeGroupsExtension = ".group.json";
 
         public static readonly DirectoryInfo BiomesFolder = Directory.CreateDirectory(BiomesFolderPath);
 
@@ -263,7 +263,7 @@ namespace Nuterra.Biomes
 
         public static IEnumerator LoadAllTerrainLayers()
         {
-            var layers = BiomesFolder.GetFiles(TerrainLayerExtension, SearchOption.AllDirectories);
+            var layers = BiomesFolder.GetFiles("*" + TerrainLayerExtension, SearchOption.AllDirectories);
             LogAsset("Loading TerrainLayers", TerrainLayersTag);
 
             foreach (var file in layers)
@@ -311,8 +311,8 @@ namespace Nuterra.Biomes
 
         public static IEnumerator LoadAllMapGenerators()
         {
-            var m_Layers = typeof(MapGenerator).GetField("m_Layers", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var generators = BiomesFolder.GetFiles(MapGeneratorExtension, SearchOption.AllDirectories);
+            var m_Layers = typeof(MapGenerator).GetField("m_Layers", BindingFlags.Instance | BindingFlags.NonPublic);
+            var generators = BiomesFolder.GetFiles("*" + MapGeneratorExtension, SearchOption.AllDirectories);
             LogAsset("Loading MapGenerators", MapGeneratorsTag);
 
             GameObject generators_holder = new GameObject();
@@ -376,7 +376,7 @@ namespace Nuterra.Biomes
             var Biome_T = typeof(Biome);
             var fields = Biome_T.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            var biomes = BiomesFolder.GetFiles(BiomesExtension, SearchOption.AllDirectories);
+            var biomes = BiomesFolder.GetFiles("*" + BiomesExtension, SearchOption.AllDirectories);
             LogAsset("Loading Biomes", BiomesTag);
 
             var settings = new JsonSerializerSettings()
@@ -385,7 +385,6 @@ namespace Nuterra.Biomes
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 Converters = {
                     new JsonConverters.ScriptableObjectConverter(),
-                    new JsonConverters.UnityObjectConverter<Texture>(),
                     new JsonConverters.UnityObjectConverter<AudioClip>(),
                     new JsonConverters.UnityObjectConverter<TerrainLayer>(),
                     new JsonConverters.UnityObjectConverter<MapGenerator>(),
@@ -478,7 +477,7 @@ namespace Nuterra.Biomes
 
         public static IEnumerator LoadAllBiomeGroups()
         {
-            var biomeGroups = BiomesFolder.GetFiles(BiomeGroupsExtension, SearchOption.AllDirectories);
+            var biomeGroups = BiomesFolder.GetFiles("*" + BiomeGroupsExtension, SearchOption.AllDirectories);
             LogAsset("Loading BiomesGroups", BiomesTag);
 
             var settings = new JsonSerializerSettings()

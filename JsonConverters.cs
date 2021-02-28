@@ -24,10 +24,15 @@ namespace Nuterra.Biomes.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            var obj = value as T;
+            if (obj)
+            {
+                var name = JToken.FromObject(obj.name);
+                name.WriteTo(writer);
+            }
         }
 
-        public override bool CanWrite => false;
+        public override bool CanWrite => true;
         public override bool CanRead => true;
     }
 
@@ -152,10 +157,12 @@ namespace Nuterra.Biomes.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            var obj = JObject.FromObject(value);
+            obj.Remove("weightingTagHash");
+            obj.WriteTo(writer);
         }
 
-        public override bool CanWrite => false;
+        public override bool CanWrite => true;
         public override bool CanRead => true;
     }
 
@@ -202,8 +209,6 @@ namespace Nuterra.Biomes.JsonConverters
                 res = AnimationCurve.EaseInOut(timeStart, valueStart, timeEnd, valueEnd);
             }
 
-            Console.WriteLine(JObject.FromObject(res));
-
             return res;
         }
 
@@ -214,5 +219,44 @@ namespace Nuterra.Biomes.JsonConverters
 
         public override bool CanWrite => false;
         public override bool CanRead => true;
+    }
+
+    public class ContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+    {
+        public Dictionary<string, List<string>> Members = new Dictionary<string, List<string>>();
+
+        public ContractResolver() : base()
+        {
+            DefaultMembersSearchFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+        }
+
+        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+        {
+            List<MemberInfo> res = null;
+            if (Members.TryGetValue(objectType.Name, out var memberNames))
+            {
+                res = objectType.GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Where(m => memberNames.Contains(m.Name))
+                    .ToList();
+            }
+            else
+            {
+                var fields = objectType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                            .Where(f => !f.IsAssembly).ToArray();
+                if (fields.Length == 0)
+                {
+                    res = objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                        .Where(p => p.CanWrite)
+                        .ToList<MemberInfo>();
+                } 
+                else
+                {
+                    res = fields.ToList<MemberInfo>();
+                }
+                
+            }
+
+            return res;
+        }
     }
 }
