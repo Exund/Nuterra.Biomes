@@ -18,10 +18,12 @@
 			"$ref": "#/definitions/EaseInOut"
 		},
 		"preWrapMode": {
-			"$ref": "./AnimationCurve.schema.json#/definitions/WrapMode"
+			"$ref": "./AnimationCurve.schema.json#/definitions/WrapMode",
+			"description": "Pre wrap mode"
 		},
 		"postWrapMode": {
-			"$ref": "./AnimationCurve.schema.json#/definitions/WrapMode"
+			"$ref": "./AnimationCurve.schema.json#/definitions/WrapMode",
+			"description": "Post wrap mode"
 		}
 	},
 	"oneOf": [

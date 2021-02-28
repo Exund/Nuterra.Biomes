@@ -76,22 +76,26 @@ namespace Nuterra.Biomes
         {
             foreach (var item in injectedBiomes)
             {
-                var group = Resources.GetObjectFromResources<BiomeGroup>(item.biomeGroupName);
-                if (group)
+                for (int i = 0; i < item.biomeGroupNames.Length; i++)
                 {
-                    var biomes = ((Biome[])m_Biomes.GetValue(group)).ToList();
-                    biomes.Add(item.biome);
-                    m_Biomes.SetValue(group, biomes.ToArray());
+                    var groupName = item.biomeGroupNames[i];
+                    var group = Resources.GetObjectFromResources<BiomeGroup>(groupName);
+                    if (group)
+                    {
+                        var biomes = ((Biome[])m_Biomes.GetValue(group)).ToList();
+                        biomes.Add(item.biome);
+                        m_Biomes.SetValue(group, biomes.ToArray());
 
-                    var weights = ((float[])m_BiomeWeights.GetValue(group)).ToList();
-                    weights.Add(item.biomeWeight);
-                    m_BiomeWeights.SetValue(group, weights.ToArray());
+                        var weights = ((float[])m_BiomeWeights.GetValue(group)).ToList();
+                        weights.Add(item.biomeWeights[i]);
+                        m_BiomeWeights.SetValue(group, weights.ToArray());
 
-                    Resources.LogAsset(string.Format("Biome \"{0}\" added to BiomeGroup \"{1}\"", item.biome.name, item.biomeGroupName), Resources.BiomesTag);
-                }
-                else
-                {
-                    Resources.LogError(string.Format("BiomeGroup \"{0}\" doesn't exist for Biome \"{1}\"", item.biomeGroupName, item.biome.name), Resources.BiomesTag);
+                        Resources.LogAsset(string.Format("Biome \"{0}\" added to BiomeGroup \"{1}\"", item.biome.name, groupName), Resources.BiomesTag);
+                    }
+                    else
+                    {
+                        Resources.LogError(string.Format("BiomeGroup \"{0}\" doesn't exist for Biome \"{1}\"", groupName, item.biome.name), Resources.BiomesTag);
+                    }
                 }
             }
         }
@@ -134,22 +138,25 @@ namespace Nuterra.Biomes
         {
             foreach (var item in injectedBiomes)
             {
-                var group = Resources.GetObjectFromResources<BiomeGroup>(item.biomeGroupName);
-                if (group)
+                foreach (var groupName in item.biomeGroupNames)
                 {
-                    var biomes = ((Biome[])m_Biomes.GetValue(group)).ToList();
-                    var index = biomes.IndexOf(item.biome);
-
-                    if (index != -1)
+                    var group = Resources.GetObjectFromResources<BiomeGroup>(groupName);
+                    if (group)
                     {
-                        biomes.RemoveAt(index);
-                        m_Biomes.SetValue(group, biomes.ToArray());
+                        var biomes = ((Biome[])m_Biomes.GetValue(group)).ToList();
+                        var index = biomes.IndexOf(item.biome);
 
-                        var weights = ((float[])m_BiomeWeights.GetValue(group)).ToList();
-                        weights.RemoveAt(index);
-                        m_BiomeWeights.SetValue(group, weights.ToArray());
+                        if (index != -1)
+                        {
+                            biomes.RemoveAt(index);
+                            m_Biomes.SetValue(group, biomes.ToArray());
 
-                        Resources.LogAsset(string.Format("Biome \"{0}\" removed from BiomeGroup \"{1}\"", item.biome.name, item.biomeGroupName), Resources.BiomesTag);
+                            var weights = ((float[])m_BiomeWeights.GetValue(group)).ToList();
+                            weights.RemoveAt(index);
+                            m_BiomeWeights.SetValue(group, weights.ToArray());
+
+                            Resources.LogAsset(string.Format("Biome \"{0}\" removed from BiomeGroup \"{1}\"", item.biome.name, groupName), Resources.BiomesTag);
+                        }
                     }
                 }
             }

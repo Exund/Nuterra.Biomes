@@ -8,9 +8,9 @@ namespace Nuterra.Biomes
 {
     internal struct BiomeWrapper
     {
-        public string biomeGroupName;
+        public string[] biomeGroupNames;
 
-        public float biomeWeight;
+        public float[] biomeWeights;
 
         public Biome biome;
     }

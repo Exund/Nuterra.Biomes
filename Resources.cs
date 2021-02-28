@@ -444,13 +444,32 @@ namespace Nuterra.Biomes
                                 }
                             }
 
-                            if (biomeJSON["BiomeGroupName"] != null)
+                            if (biomeJSON["BiomeGroupNames"] != null)
                             {
+                                var names = biomeJSON["BiomeGroupNames"].ToObject<string[]>();
+                                var weights = new float[0];
+                                if (biomeJSON["BiomeWeights"] == null) {
+                                    weights = new float[names.Length];
+                                    for (int i = 0; i < weights.Length; i++)
+                                    {
+                                        weights[i] = 1f;
+                                    }
+                                }
+                                else
+                                {
+                                    weights = biomeJSON["BiomeWeights"].ToObject<float[]>();
+                                    var oldLength = weights.Length;
+                                    Array.Resize(ref weights, names.Length);
+                                    for (int i = oldLength; i < weights.Length; i++)
+                                    {
+                                        weights[i] = 1f;
+                                    }
+                                }
                                 biomeWrappers.Add(new BiomeWrapper()
                                 {
                                     biome = biome,
-                                    biomeGroupName = biomeJSON["BiomeGroupName"].ToObject<string>(),
-                                    biomeWeight = biomeJSON["BiomeWeight"] == null ? 1f : biomeJSON["BiomeWeight"].ToObject<float>()
+                                    biomeGroupNames = names,
+                                    biomeWeights = weights
                                 });
                             }
 

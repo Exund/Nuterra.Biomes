@@ -1,7 +1,8 @@
 {
-	"name": "Example",
-	"Reference": "CanyonsBiome",
-	"BiomeGroupName": "GrasslandGroupStart",
+	"name": "Example", // Biome name. Used for referencing
+	"Reference": "CanyonsBiome", // Name of the vanilla biome to use as a base
+	"BiomeGroupNames": ["GrasslandGroupStart", "DesertGroupBasic"],
+	"BiomeWeights": [2],
 	"editorRenderColour": {
 		"r": 0,
 		"g": 0,
@@ -9,7 +10,7 @@
 		"a": 1
 	},
 	"heightMapGenerator": "ExampleHeightMap",
-	/*"multiTextureGenerator": "BasicGrasslandBlendMap",*/
+	//"multiTextureGenerator": "BasicGrasslandBlendMap",
 	"layers": [
 		{
 			"generator": "BasicGrasslandAllRocks",
@@ -33,7 +34,6 @@
 				"spawnModifiers": [],
 				"decoration": {
 					"weightingTag": "",
-					//"weightingTagHash": 0,
 					"terrainObject": [
 						"LuxiteOutcrop1"
 					]
@@ -49,14 +49,12 @@
 				"variants": [
 					{
 						"weightingTag": "plumbite",
-						//"weightingTagHash": -1854289780,
 						"terrainObject": [
 							"RockGrassland_PlumbiteSeam"
 						]
 					},
 					{
 						"weightingTag": "titanite",
-						//"weightingTagHash": -1879880690,
 						"terrainObject": [
 							"RockGrassland_TitaniteSeam"
 						]
@@ -68,8 +66,8 @@
 		}
 	],
 	"m_MainMaterialLayer": "EXAMPLE_TerrainLayer",
-	"m_AltMaterialLayer": "Rock_Light_TerrainLayer" //,
-	/*"textureBlendSteepnessRange": {
+	"m_AltMaterialLayer": "Rock_Light_TerrainLayer" /*,
+	"textureBlendSteepnessRange": {
 		"x": 0,
 		"y": 0.04
 	},
@@ -340,9 +338,9 @@
 			"Scattering": 1,
 			"Brightness": 1.5
 		}
-	},*/
-	//"m_WeatherParticles": "",
-	/*"m_DustVFXColor": {
+	},
+	"m_WeatherParticles": "",
+	"m_DustVFXColor": {
 		"r": 0.4588235,
 		"g": 0.4431373,
 		"b": 0.2470588,

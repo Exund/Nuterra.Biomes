@@ -4,19 +4,25 @@
 	"properties": {
 		"name": {
 			"type": "string",
-			"description": "Biome name"
+			"description": "Biome name. Used for referencing"
 		},
 		"Reference": {
 		  "type": "string",
-		  "description": "Vanilla biome name to use as a base"
+		  "description": "Name of the vanilla biome to use as a base"
 		},
-		"BiomeGroupName": {
-			"type": "string",
-			"description": "BiomeGroup name into which this biome will be added"
+		"BiomeGroupNames": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"description": "Names of the BiomeGroups into which this biome will be added"
 		},
-		"BiomeWeight": {
-			"type": "number",
-			"description": "Weight of the biome in the biome group specified by BiomeGroupName"
+		"BiomeWeights": {
+			"type":"array",
+			"items": {
+				"type": "number"
+			},
+			"description": "Weights of the biome in the biome groups specified by BiomeGroupNames. Defaults to 1"
 		},
 		"editorRenderColour": {
 			"$ref": "./Color.schema.json",
@@ -138,7 +144,6 @@
 			"m_AllowStuntRamps",
 			"m_BiomeType"
 		]
-		
 	},
 	"definitions": {
 		"DistanceMethod": {
@@ -274,7 +279,7 @@
 				},
 				"layer0DistMethod": {
 					"$ref": "#/definitions/DistanceMethod",
-					"description": "Layer 0 Distance method",
+					"description": "Layer 0 distance method",
 					"default": "Length2"
 				},
 				"layer1Translation": {
@@ -292,7 +297,7 @@
 				},
 				"layer1DistMethod": {
 					"$ref": "#/definitions/DistanceMethod",
-					"description": "Layer 1 Distance method",
+					"description": "Layer 1 distance method",
 					"default": "Length4"
 				},
 				"bandTolerance": {
@@ -310,6 +315,7 @@
 					"items": {
 						"$ref": "#/definitions/SpawnModifierParams"
 					},
+					"description": "Spawn modifiers",
 					"default": []
 				},
 				"decoration": {
