@@ -1,52 +1,56 @@
 {
 	"name": "Example", // Biome name. Used for referencing
 	"Reference": "CanyonsBiome", // Name of the vanilla biome to use as a base
-	"BiomeGroupNames": ["GrasslandGroupStart", "DesertGroupBasic"],
-	"BiomeWeights": [2],
-	"editorRenderColour": {
+	"BiomeGroupNames": [ // Names of the BiomeGroups into which this biome will be added
+		"GrasslandGroupStart",
+		"DesertGroupBasic"
+	],
+	"BiomeWeights": [ // Weights of the biome in the biome groups specified by BiomeGroupNames. Defaults to 1
+		2
+	],
+	"editorRenderColour": { // Editor render color
 		"r": 0,
 		"g": 0,
 		"b": 1,
 		"a": 1
 	},
-	"heightMapGenerator": "ExampleHeightMap",
-	//"multiTextureGenerator": "BasicGrasslandBlendMap",
-	"layers": [
+	"heightMapGenerator": "ExampleHeightMap", // Name of MapGenerator used for terrain height generation
+	//"multiTextureGenerator": "BasicGrasslandBlendMap", // Name of MapGenerator used for terrain texture blending
+	"layers": [ // Detail layers (clutter, resource nodes)
 		{
-			"generator": "BasicGrasslandAllRocks",
-			"distributor": {
-				"layer0Translation": {
+			"generator": "BasicGrasslandAllRocks", // Name of the MapGenerator
+			"distributor": { // Scenery distributor
+				"layer0Translation": { // Layer 0 translation
 					"x": 0,
 					"y": 0
 				},
-				"layer0Rotation": 0,
-				"layer0Scale": 0.5,
-				"layer0DistMethod": "Length2",
-				"layer1Translation": {
+				"layer0Rotation": 0, // Layer 0 rotation
+				"layer0Scale": 0.5, // Layer 0 scale
+				"layer0DistMethod": "Length2", // Layer 0 distance method
+				"layer1Translation": { // Layer 0 translation
 					"x": 0,
 					"y": 0
 				},
-				"layer1Rotation": 0,
-				"layer1Scale": 0.05,
-				"layer1DistMethod": "Length4",
-				"bandTolerance": 0,
-				"enableRegions": false,
-				"spawnModifiers": [],
-				"decoration": {
-					"weightingTag": "",
-					"terrainObject": [
+				"layer1Rotation": 0, // Layer 1 rotation
+				"layer1Scale": 0.05, // Layer 1 scale
+				"layer1DistMethod": "Length4", // Layer 1 distance method
+				"bandTolerance": 0, // Band tolerence
+				"enableRegions": false, // Enable regions
+				"spawnModifiers": [], // Spawn modifiers
+				"decoration": { // Decoration
+					"weightingTag": "", // Tag
+					"terrainObject": [ // Names of the TerrainObjects
 						"LuxiteOutcrop1"
 					]
 				},
-				"basic": {
+				"basic": { // Basic
 					"weightingTag": "",
-					"weightingTagHash": 0,
 					"terrainObject": [
 						"RockGrassland",
 						"Sign_Minefield"
 					]
 				},
-				"variants": [
+				"variants": [ // Variants
 					{
 						"weightingTag": "plumbite",
 						"terrainObject": [
@@ -60,14 +64,15 @@
 						]
 					}
 				],
-				"nonBasicThreshold": 0.84,
-				"upgradeRules": []
+				"nonBasicThreshold": 0.84, // Non basic objects threshold
+				"upgradeRules": [] // Upgrade rules
 			}
 		}
 	],
-	"m_MainMaterialLayer": "EXAMPLE_TerrainLayer",
-	"m_AltMaterialLayer": "Rock_Light_TerrainLayer" /*,
-	"textureBlendSteepnessRange": {
+	"m_MainMaterialLayer": "EXAMPLE_TerrainLayer", // Main TerrainLayer name
+	"m_AltMaterialLayer": "Rock_Light_TerrainLayer" // Alternative TerrainLayer name 
+	
+	/*"textureBlendSteepnessRange": {
 		"x": 0,
 		"y": 0.04
 	},
@@ -339,14 +344,13 @@
 			"Brightness": 1.5
 		}
 	},
-	"m_WeatherParticles": "",
-	"m_DustVFXColor": {
+	"m_DustVFXColor": { // Wheels dust particles color
 		"r": 0.4588235,
 		"g": 0.4431373,
 		"b": 0.2470588,
 		"a": 0.3137255
 	},
-	"impactEffects": [],
+	"impactEffects": [], // Projectiles impact effects
 	"m_AllowLandmarks": true,
 	"m_AllowVendors": true,
 	"m_AllowStuntRamps": false,
