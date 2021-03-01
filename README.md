@@ -15,6 +15,10 @@ Similarly to the Block Injector, the folder hierarchy is not important and asset
 
 Custom biomes files need to go in the `Custom Biomes` folder inside the TerraTech installation folder (will be automatically created when starting the game with the mod enabled)
 
+## Export
+You can export vanilla biome related objects by pressing `Ctrl+L`. <br />
+The exported files will appear in the `Export` folder of the mod folder (`QMods/Nuterra.Biomes/Export`)
+
 ## Visual Studio Code JSON Schemas config (JSON auto-completion)
 In Visual Studio Code in the menubar go to `File > Preferences > Settings` <br/>
 Then when in the settings go to `Extensions > JSON` <br/>

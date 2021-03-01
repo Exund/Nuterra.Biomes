@@ -222,7 +222,7 @@ namespace Nuterra.Biomes
                     foreach (var biome in biomes)
                     {
                         var filename = biome.name + Resources.BiomesExtension;
-                        var json = JObject.FromObject(biome, groupSerializer).ToString(Formatting.Indented);
+                        var json = JObject.FromObject(biome, biomeSerializer).ToString(Formatting.Indented);
                         File.WriteAllText(Path.Combine(BiomesFolder, filename), json);
                     }
                 }

@@ -157,7 +157,12 @@ namespace Nuterra.Biomes.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var obj = JObject.FromObject(value);
+            var obj = JObject.FromObject(value, JsonSerializer.CreateDefault(new JsonSerializerSettings()
+            {
+                Converters = {
+                    new UnityObjectConverter<TerrainObject>()
+                }
+            }));
             obj.Remove("weightingTagHash");
             obj.WriteTo(writer);
         }
