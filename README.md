@@ -15,6 +15,10 @@ Similarly to the Block Injector, the folder hierarchy is not important and asset
 
 Custom biomes files need to go in the `Custom Biomes` folder inside the TerraTech installation folder (will be automatically created when starting the game with the mod enabled)
 
+## MapGenerators
+MapGenerators have a lot of variables and their meaning is not always very clear.
+For more information about the generation algorithms see the [notes](notes.md).
+
 ## Export
 You can export vanilla biome related objects by pressing `Ctrl+L`. <br />
 The exported files will appear in the `Export` folder of the mod folder (`QMods/Nuterra.Biomes/Export`)
