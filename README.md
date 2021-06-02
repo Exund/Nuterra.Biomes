@@ -11,7 +11,7 @@ Each object type has its own JSON extension
 - MapGenerator: `*.generator.json`
 - TerrainLayer: `*.layer.json`
 
-Similarly to the Block Injector, the folder hierarchy is not important and assets are referenced by name (either filename for texture or the "name" field in JSON for objects) so just be sure to have a unique name for your assets.
+Similarly to the [Block Injector](https://github.com/Aceba1/TTQMM-Nuterra-Block-Injector-Library), the folder hierarchy is not important and assets are referenced by name (either filename for texture or the "name" field in JSON for objects) so just be sure to have a unique name for your assets.
 
 Custom biomes files need to go in the `Custom Biomes` folder inside the TerraTech installation folder (will be automatically created when starting the game with the mod enabled)
 
