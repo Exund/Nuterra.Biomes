@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Harmony;
+using HarmonyLib;
 
 namespace Nuterra.Biomes
 {
@@ -25,7 +25,7 @@ namespace Nuterra.Biomes
 
             GameObject.DontDestroyOnLoad(holder);
 
-            var harmony = HarmonyInstance.Create("nuterra.biomes");
+            var harmony = new Harmony("nuterra.biomes");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
